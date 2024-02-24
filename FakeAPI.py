@@ -15,8 +15,17 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/orders/{id}")
 async def read_order(id: str):
@@ -24,8 +33,7 @@ async def read_order(id: str):
 
 @app.delete("/orders/{id}")
 async def delete_order(id: str):
-    return JSONResponse(status_code=200)
-
+    return JSONResponse(content={}, status_code=200)
 if __name__ == "__main__":
     uvicorn.run(app, host="localhost", port=8000)
 
